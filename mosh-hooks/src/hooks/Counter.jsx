@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 
 function Counter(props) {
   // const array = useState(0);
@@ -6,6 +6,16 @@ function Counter(props) {
   // const setState = array[1]; // this.setState();
   const [count, setCount] = useState(0);
   const [name, setName] = useState('');
+
+  useEffect(() => {
+    document.title = ` ${name} has clicked ${count} times`;
+
+    // componentWillUnmount
+    return () => {
+      console.log('cleanup')
+    }
+  });
+
   return (
     <Fragment>
       <input type="text" onChange={e => setName(e.target.value)} />

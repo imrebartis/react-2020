@@ -3,8 +3,7 @@ import ReactDOM from "react-dom";
 import * as serviceWorker from "./serviceWorker";
 
 const NoteApp = () => {
-  const notesData = JSON.parse(localStorage.getItem("notes"));
-  const [notes, setNotes] = useState(notesData || []);
+  const [notes, setNotes] = useState([]);
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
 
@@ -20,8 +19,16 @@ const NoteApp = () => {
   };
 
   useEffect(() => {
+    const notesData = JSON.parse(localStorage.getItem("notes"));
+
+    if (notesData) {
+      setNotes(notesData);
+    }
+  }, []);
+
+  useEffect(() => {
     localStorage.setItem("notes", JSON.stringify(notes));
-  });
+  }, [notes]);
 
   return (
     <div>
@@ -46,29 +53,36 @@ const NoteApp = () => {
   );
 };
 
-// const App = (props) => {
-//   const [count, setCount] = useState(props.count);
-//   const [text, setText] = useState('');
+const App = props => {
+  const [count, setCount] = useState(props.count);
+  const [text, setText] = useState("");
 
-//   useEffect(() => {
-//     document.title = count
-//   })
+  useEffect(() => {
+    console.log("this should only run once");
+  }, []);
 
-//   return (
-//     <div>
-//       <p>Current {text || 'count'} is {count}</p>
-//       <button onClick={() => setCount(count + 1)}>+1</button>
-//       <button onClick={() => setCount(count - 1)}>-1</button>
-//       <button onClick={() => setCount(props.count)}>Reset</button>
-//       <input value={text} onChange={(e) => setText(e.target.value)} />
-//     </div>
-//   );
-// };
+  useEffect(() => {
+    console.log("useEffect ran");
+    document.title = count;
+  }, [count]);
+
+  return (
+    <div>
+      <p>
+        Current {text || "count"} is {count}
+      </p>
+      <button onClick={() => setCount(count + 1)}>+1</button>
+      <button onClick={() => setCount(count - 1)}>-1</button>
+      <button onClick={() => setCount(props.count)}>Reset</button>
+      <input value={text} onChange={e => setText(e.target.value)} />
+    </div>
+  );
+};
 
 // App.defaultProps = {
 //   count: 0
 // }
-ReactDOM.render(<NoteApp/>, document.getElementById("root"));
+ReactDOM.render(<NoteApp />, document.getElementById("root"));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

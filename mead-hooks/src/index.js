@@ -1,28 +1,48 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import ReactDOM from "react-dom";
 import * as serviceWorker from "./serviceWorker";
 
+const notesReducer = (state, action) => {
+  switch (action.type) {
+    case "POPULATE_NOTES":
+      return action.notes;
+    case "ADD_NOTE":
+      return [...state, { title: action.title, body: action.body }];
+    case "REMOVE_NOTE":
+      return state.filter(note => note.title !== action.title);
+    default:
+      return state;
+  }
+};
+
 const NoteApp = () => {
-  const [notes, setNotes] = useState([]);
+  const [notes, dispatch] = useReducer(notesReducer, []);
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
 
   const addNote = e => {
     e.preventDefault();
-    setNotes([...notes, { title, body }]);
+    dispatch({
+      type: "ADD_NOTE",
+      title,
+      body
+    })
     setTitle("");
     setBody("");
   };
 
   const removeNote = title => {
-    setNotes(notes.filter(note => note.title !== title));
+    dispatch({
+      type: "REMOVE_NOTE",
+      title
+    })
   };
 
   useEffect(() => {
-    const notesData = JSON.parse(localStorage.getItem("notes"));
+    const notes = JSON.parse(localStorage.getItem("notes"));
 
-    if (notesData) {
-      setNotes(notesData);
+    if (notes) {
+      dispatch({ type: "POPULATE_NOTES", notes });
     }
   }, []);
 
@@ -51,12 +71,12 @@ const NoteApp = () => {
 
 const Note = ({ note, removeNote }) => {
   useEffect(() => {
-    console.log("setting up effect")
+    console.log("setting up effect");
 
     return () => {
-      console.log("cleaning up effect")
-    }
-  }, [])
+      console.log("cleaning up effect");
+    };
+  }, []);
 
   return (
     <div>
@@ -66,10 +86,6 @@ const Note = ({ note, removeNote }) => {
     </div>
   );
 };
-
-// App.defaultProps = {
-//   count: 0
-// }
 ReactDOM.render(<NoteApp />, document.getElementById("root"));
 
 // If you want your app to work offline and load faster, you can change

@@ -1,31 +1,10 @@
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useEffect, useReducer } from "react";
 import notesReducer from "../reducers/notes";
+import NoteList from "./NoteList";
+import AddNoteForm from "./AddNoteForm";
 
 const NoteApp = () => {
   const [notes, dispatch] = useReducer(notesReducer, []);
-  const [title, setTitle] = useState("");
-  const [body, setBody] = useState("");
-
-  const Note = ({ note, removeNote }) => {
-    return (
-      <div>
-        <h3>{note.title}</h3>
-        <p>{note.body}</p>
-        <button onClick={() => removeNote(note.title)}>x</button>
-      </div>
-    );
-  };
-
-  const addNote = e => {
-    e.preventDefault();
-    dispatch({
-      type: "ADD_NOTE",
-      title,
-      body
-    });
-    setTitle("");
-    setBody("");
-  };
 
   const removeNote = title => {
     dispatch({
@@ -49,18 +28,8 @@ const NoteApp = () => {
   return (
     <div>
       <h1>Notes</h1>
-      {notes.map(note => (
-        <Note key={note.title} note={note} removeNote={removeNote} />
-      ))}
-      <p>Add note</p>
-      <form onSubmit={addNote}>
-        <input value={title} onChange={e => setTitle(e.target.value)} />
-        <textarea
-          value={body}
-          onChange={e => setBody(e.target.value)}
-        ></textarea>
-        <button>add note</button>
-      </form>
+      <NoteList notes={notes} removeNote={removeNote} />
+      <AddNoteForm dispatch={dispatch} />
     </div>
   );
 };

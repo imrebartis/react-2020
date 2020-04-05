@@ -12,8 +12,8 @@ const DUMMY_PLACES = [
       "https://cdn.pixabay.com/photo/2015/12/08/00/40/empire-state-building-1081929_1280.jpg",
     address: "20 W 34th St, New York, NY 10001, United States",
     location: {
+      lng: -73.985648,
       lat: 40.748612,
-      lng: -73.985648
     },
     creator: "u1"
   },
@@ -25,8 +25,8 @@ const DUMMY_PLACES = [
       "https://cdn.pixabay.com/photo/2013/04/08/14/22/stonehenge-101801_1280.jpg",
     address: "Salisbury SP4 7DE, United Kingdom",
     location: {
+      lng: -1.826215,
       lat: 51.179487,
-      lng: -1.826215
     },
     creator: "u2"
   }

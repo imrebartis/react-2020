@@ -41,7 +41,7 @@ const PlaceItem = props => {
               View on map
             </Button>
             <Button to={`places/${props.id}`}>Delete</Button>
-            <Button danger>Edit</Button>
+            <Button danger to={`/places/${props.id}`}>Edit</Button>
           </div>
         </Card>
       </li>

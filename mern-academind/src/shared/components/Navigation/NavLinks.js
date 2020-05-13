@@ -1,9 +1,9 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React from 'react';
+import { NavLink } from 'react-router-dom';
 
-import "./NavLinks.css";
+import './NavLinks.css';
 
-const NavLinks = props => {
+const NavLinks = (props) => {
   return (
     <ul className="nav-links">
       <li>

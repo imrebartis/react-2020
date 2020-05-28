@@ -40,9 +40,7 @@ function HomeGuest() {
                 <small>Username</small>
               </label>
               <input
-                onChange={(e) => {
-                  setUsername(e.target.value);
-                }}
+                onChange={(e) => setUsername(e.target.value)}
                 id="username-register"
                 name="username"
                 className="form-control"
@@ -56,9 +54,7 @@ function HomeGuest() {
                 <small>Email</small>
               </label>
               <input
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                }}
+                onChange={(e) => setEmail(e.target.value)}
                 id="email-register"
                 name="email"
                 className="form-control"
@@ -72,9 +68,7 @@ function HomeGuest() {
                 <small>Password</small>
               </label>
               <input
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                }}
+                onChange={(e) => setPassword(e.target.value)}
                 id="password-register"
                 name="password"
                 className="form-control"

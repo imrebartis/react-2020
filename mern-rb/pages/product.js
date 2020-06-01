@@ -3,7 +3,6 @@ import ProductSummary from "../components/Product/ProductSummary";
 import ProductAttributes from "../components/Product/ProductAttributes";
 
 function Product({ product }) {
-  console.log({product})
   return (
     <>
       <ProductSummary {...product} />

@@ -1,18 +1,11 @@
-import {
-  Header,
-  Segment,
-  Button,
-  Icon,
-  Item,
-  ItemHeader,
-} from "semantic-ui-react";
+import { Header, Segment, Button, Icon, Item } from "semantic-ui-react";
 import { useRouter } from "next/router";
 
-function CartItemList({ products = [], user }) {
+function CartItemList({ products, user, handleRemoveFromCart }) {
   const router = useRouter();
 
   function mapCartProductsToItems(products) {
-    return products.map((p) => ({
+    return products.map(p => ({
       childKey: p.product._id,
       header: (
         <Item.Header
@@ -30,9 +23,9 @@ function CartItemList({ products = [], user }) {
           basic
           icon="remove"
           floated="right"
-          onClick={() => console.log(p.product._id)}
+          onClick={() => handleRemoveFromCart(p.product._id)}
         />
-      ),
+      )
     }));
   }
 

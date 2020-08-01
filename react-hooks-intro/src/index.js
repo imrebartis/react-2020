@@ -1,18 +1,24 @@
-import React from 'react';
+import React, { useContext, useReducer } from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
 import * as serviceWorker from './serviceWorker';
+import TodosContext from './context';
+import todosReducer from './reducer.js';
 
-export const UserContext = React.createContext();
+import TodoList from './components/TodoList';
 
-const username = 'Barry';
+const App = () => {
+  const initialState = useContext(TodosContext);
+  const [state, dispatch] = useReducer(todosReducer, initialState)
+
+  return (
+    <TodosContext.Provider value={{ state, dispatch }}>
+      <TodoList />
+    </TodosContext.Provider>
+  )
+};
 
 ReactDOM.render(
-  <UserContext.Provider value={username}>
-    <App />
-  </UserContext.Provider>,
-  document.getElementById('root'),
-);
+  <App />, document.getElementById('root'));
 
 if (module.hot) {
   module.hot.accept();

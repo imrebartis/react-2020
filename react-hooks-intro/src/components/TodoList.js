@@ -34,7 +34,10 @@ export default function TodoList() {
             <button className="mr-2">
               <Icon className="text-blue-800" icon={pen_1} />
             </button>
-            <button className="mr-1">
+            <button
+              className="mr-1"
+              onClick={() => dispatch({ type: 'REMOVE_TODO', payload: todo })}
+            >
               <Icon className="text-black" icon={bin} />
             </button>
           </li>

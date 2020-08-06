@@ -31,7 +31,7 @@ export default function TodoList() {
             >
               {todo.text}
             </span>
-            <button className="mr-2">
+            <button onClick={() => dispatch({ type: 'SET_CURRENT_TODO', payload: todo })} className="mr-2">
               <Icon className="text-blue-800" icon={pen_1} />
             </button>
             <button

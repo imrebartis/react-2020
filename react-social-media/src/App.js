@@ -1,18 +1,25 @@
-import React, { useState, useEffect, useCallback, createContext} from 'react';
+import React, {
+  useContext,
+  useState,
+  useEffect,
+  createContext,
+  useReducer,
+} from 'react';
 import Login from './components/Login';
 import Header from './components/Header';
 import CreatePost from './components/CreatePost';
-import PostList from './PostList';
+import PostList from './components/PostList';
+import postReducer from './reducer';
 
 export const UserContext = createContext();
+export const PostContext = createContext({
+  posts: [],
+});
 
 function App() {
+  const initialPostState = useContext(PostContext);
+  const [state, dispatch] = useReducer(postReducer, initialPostState);
   const [user, setUser] = useState('ddf');
-  const [posts, setPosts] = useState([]);
-
-  const handleAddPost =  useCallback((newPost) => {
-    setPosts([newPost, ...posts]);
-  }, [posts]);
 
   useEffect(() => {
     document.title = user ? `${user}'s Feed` : 'Please log in';
@@ -23,11 +30,13 @@ function App() {
   }
 
   return (
+    <PostContext.Provider value={{ state, dispatch }}>
     <UserContext.Provider value={user}>
       <Header user={user} setUser={setUser} />
-      <CreatePost user={user} handleAddPost={handleAddPost} />
-      <PostList posts={posts} />
+      <CreatePost user={user} />
+      <PostList posts={state.posts} />
     </UserContext.Provider>
+    </PostContext.Provider>
   );
 }
 

@@ -13,6 +13,7 @@ function CreatePost({ user }) {
       content,
       image,
       user,
+      id: Date.now(),
     };
     dispatch({ type: 'ADD_POST', payload: { post } });
     setContent('');

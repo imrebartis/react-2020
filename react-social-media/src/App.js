@@ -36,6 +36,18 @@ const ADD_TODO = gql`
   }
 `;
 
+const DELETE_TODO = gql`
+  mutation deleteTodo($id: uuid!) {
+    delete_todos(where: { id: { _eq: $id } }) {
+      returning {
+        done
+        id
+        text
+      }
+    }
+  }
+`;
+
 function App() {
   const [todoText, setTodoText] = useState('');
   const { data, loading, error } = useQuery(GET_TODOS);
@@ -43,6 +55,7 @@ function App() {
   const [addTodo] = useMutation(ADD_TODO, {
     onCompleted: () => setTodoText(''),
   });
+  const [deleteTodo] = useMutation(DELETE_TODO);
 
   async function handleToggleTodo({ id, done }) {
     const data = await toggleTodo({ variables: { id, done: !done } });
@@ -58,6 +71,21 @@ function App() {
     });
     console.log('added todo', data);
     // setTodoText("");
+  }
+
+  async function handleDeleteTodo({ id }) {
+    const isConfirmed = window.confirm('Do you want to delete this todo?');
+    if (isConfirmed) {
+      const data = await deleteTodo({
+        variables: { id },
+        update: (cache) => {
+          const prevData = cache.readQuery({ query: GET_TODOS });
+          const newTodos = prevData.todos.filter((todo) => todo.id !== id);
+          cache.writeQuery({ query: GET_TODOS, data: { todos: newTodos } });
+        },
+      });
+      console.log('deleted todo', data);
+    }
   }
 
   if (loading) return <div>Loading todos...</div>;
@@ -91,7 +119,10 @@ function App() {
             <span className={`pointer list pa1 f3 ${todo.done && 'strike'}`}>
               {todo.text}
             </span>
-            <button className="bg-transparent bn f4">
+            <button
+              onClick={() => handleDeleteTodo(todo)}
+              className="bg-transparent bn f4"
+            >
               <span className="red">&times;</span>
             </button>
           </p>

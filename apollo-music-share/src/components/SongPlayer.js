@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import QueuedSongList from './QueuedSongList';
 import {
   Card,
@@ -10,6 +10,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { SkipPrevious, PlayArrow, SkipNext } from '@material-ui/icons';
+import { SongContext } from '../App';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -41,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
 
 function SongPlayer() {
   const classes = useStyles();
+  const { state } = useContext(SongContext);
 
   return (
     <>
@@ -48,10 +50,10 @@ function SongPlayer() {
         <div className={classes.details}>
           <CardContent className={classes.content}>
             <Typography variant="h5" component="h3">
-              Title
+              {state.song.title}
             </Typography>
             <Typography variant="subtitle1" component="p" color="textSecondary">
-              Artist
+              {state.song.artist}
             </Typography>
           </CardContent>
           <div className={classes.controls}>
@@ -72,7 +74,7 @@ function SongPlayer() {
         </div>
         <CardMedia
           className={classes.thumbnail}
-          image="http://img.youtube.com/vi/KbC46oJmLh4/0.jpg"
+          image={state.song.thumbnail}
         />
       </Card>
       <QueuedSongList />

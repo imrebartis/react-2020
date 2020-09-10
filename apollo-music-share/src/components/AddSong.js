@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useMutation } from '@apollo/client';
 import {
   TextField,
@@ -45,12 +45,12 @@ const DEFAULT_SONG = {
 function AddSong() {
   const classes = useStyles();
   const [addSong, { error }] = useMutation(ADD_SONG);
-  const [url, setUrl] = React.useState('');
-  const [playable, setPlayable] = React.useState(false);
-  const [dialog, setDialog] = React.useState(false);
-  const [song, setSong] = React.useState(DEFAULT_SONG);
+  const [url, setUrl] = useState('');
+  const [playable, setPlayable] = useState(false);
+  const [dialog, setDialog] = useState(false);
+  const [song, setSong] = useState(DEFAULT_SONG);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const isPlayable =
       SoundcloudPlayer.canPlay(url) || YoutubePlayer.canPlay(url);
     setPlayable(isPlayable);

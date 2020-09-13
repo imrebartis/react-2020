@@ -81,6 +81,11 @@ function Song({ song }) {
     setCurrentSongPlaying(isSongPlaying);
   }, [id, state.song.id, state.isPlaying]);
 
+  function handleTogglePlay() {
+    dispatch({ type: "SET_SONG", payload: { song } });
+    dispatch(state.isPlaying ? { type: "PAUSE_SONG" } : { type: "PLAY_SONG" });
+  }
+
   return (
     <Card className={classes.container}>
       <div className={classes.songInfoContainer}>
@@ -95,7 +100,7 @@ function Song({ song }) {
             </Typography>
           </CardContent>
           <CardActions>
-            <IconButton size="small" color="primary">
+          <IconButton onClick={handleTogglePlay} size="small" color="primary">
               {currentSongPlaying ? <Pause /> : <PlayArrow />}
             </IconButton>
             <IconButton size="small" color="secondary">

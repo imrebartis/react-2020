@@ -17,7 +17,6 @@ import { ADD_OR_REMOVE_FROM_QUEUE } from '../graphql/mutations';
 
 function SongList() {
   const { data, loading, error } = useSubscription(GET_SONGS);
-  const [currentSongPlaying, setCurrentSongPlaying] = useState(false);
 
   // const song = {
   //   title: "LÜNE",

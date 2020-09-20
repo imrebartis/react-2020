@@ -13,6 +13,7 @@ import { SkipPrevious, PlayArrow, SkipNext, Pause } from '@material-ui/icons';
 import { SongContext } from '../App';
 import { useQuery } from '@apollo/react-hooks';
 import { GET_QUEUED_SONGS } from '../graphql/queries';
+import ReactPlayer from 'react-player';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -46,6 +47,7 @@ function SongPlayer() {
   const { data } = useQuery(GET_QUEUED_SONGS);
   const classes = useStyles();
   const { state, dispatch } = useContext(SongContext);
+  const [played, setPlayed] = React.useState(0);
 
   function handleTogglePlay() {
     dispatch(state.isPlaying ? { type: 'PAUSE_SONG' } : { type: 'PLAY_SONG' });
@@ -81,8 +83,16 @@ function SongPlayer() {
               00:01:30
             </Typography>
           </div>
-          <Slider type="range" min={0} max={1} step={0.01} />
+          <Slider type="range" value={played} min={0} max={1} step={0.01} />
         </div>
+        <ReactPlayer
+          url={state.song.url}
+          onProgress={({ played, playedSeconds }) => {
+            setPlayed(played);
+          }}
+          playing={state.isPlaying}
+          hidden
+        />
         <CardMedia className={classes.thumbnail} image={state.song.thumbnail} />
       </Card>
       <QueuedSongList queue={data.queue} />

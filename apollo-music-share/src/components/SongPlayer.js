@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import QueuedSongList from './QueuedSongList';
 import {
   Card,
@@ -45,12 +45,27 @@ const useStyles = makeStyles((theme) => ({
 
 function SongPlayer() {
   const { data } = useQuery(GET_QUEUED_SONGS);
+  const reactPlayerRef = useRef();
   const classes = useStyles();
   const { state, dispatch } = useContext(SongContext);
-  const [played, setPlayed] = React.useState(0);
+  const [seeking, setSeeking] = useState(false);
+  const [played, setPlayed] = useState(0);
 
   function handleTogglePlay() {
     dispatch(state.isPlaying ? { type: 'PAUSE_SONG' } : { type: 'PLAY_SONG' });
+  }
+
+  function handleProgressChange(event, newValue) {
+    setPlayed(newValue);
+  }
+
+  function handleSeekMouseDown() {
+    setSeeking(true);
+  }
+
+  function handleSeekMouseUp() {
+    setSeeking(false);
+    reactPlayerRef.current.seekTo(played);
   }
 
   return (
@@ -83,12 +98,24 @@ function SongPlayer() {
               00:01:30
             </Typography>
           </div>
-          <Slider type="range" value={played} min={0} max={1} step={0.01} />
+          <Slider
+            onMouseDown={handleSeekMouseDown}
+            onMouseUp={handleSeekMouseUp}
+            onChange={handleProgressChange}
+            type="range"
+            value={played}
+            min={0}
+            max={1}
+            step={0.01}
+          />
         </div>
         <ReactPlayer
+          ref={reactPlayerRef}
           url={state.song.url}
-          onProgress={({ played, playedSeconds }) => {
-            setPlayed(played);
+          onProgress={({ played }) => {
+            if (!seeking) {
+              setPlayed(played);
+            }
           }}
           playing={state.isPlaying}
           hidden

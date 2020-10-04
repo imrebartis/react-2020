@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { ObjectId, Number } = mongoose.Schema.Types;
 
 const Schema = mongoose.Schema;
 
@@ -11,7 +12,7 @@ const placeSchema = new Schema({
     lat: { type: Number, required: true },
     lng: { type: Number, required: true },
   },
-  creator: { type: mongoose.Types.ObjectId, required: true, ref: 'User' },
+  creator: { type: ObjectId, required: true, ref: 'User' },
 });
 
 module.exports = mongoose.model('Place', placeSchema);

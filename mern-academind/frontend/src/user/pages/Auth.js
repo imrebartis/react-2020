@@ -11,7 +11,6 @@ import { useForm } from '../../shared/hooks/form-hook';
 import Card from '../../shared/components/UIElements/Card';
 import { AuthContext } from '../../shared/context/auth-context';
 
-
 import './Auth.css';
 
 const Auth = () => {
@@ -33,25 +32,53 @@ const Auth = () => {
 
   const switchModeHandler = () => {
     if (!isLoginMode) {
-      setFormData({
-        ...formState.inputs,
-        name: undefined,
-      }, formState.inputs.email.isValid && formState.inputs.password.isValid);
+      setFormData(
+        {
+          ...formState.inputs,
+          name: undefined,
+        },
+        formState.inputs.email.isValid && formState.inputs.password.isValid,
+      );
     } else {
-      setFormData({
-        ...formState.inputs,
-        name: {
-          value: '',
-          isValid: false,
-        }
-      }, false);
+      setFormData(
+        {
+          ...formState.inputs,
+          name: {
+            value: '',
+            isValid: false,
+          },
+        },
+        false,
+      );
     }
     setIsLoginMode((prevMode) => !prevMode);
   };
 
-  const authSubmitHandler = (event) => {
+  const authSubmitHandler = async (event) => {
     event.preventDefault();
     console.log(formState.inputs);
+
+    if (isLoginMode) {
+    } else {
+      try {
+        const response = await fetch('http://localhost:5000/api/users/signup', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: formState.inputs.name.value,
+            email: formState.inputs.email.value,
+            password: formState.inputs.password.value,
+          }),
+        });
+        const responseData = response.json();
+        console.log(responseData);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
     auth.login();
   };
 

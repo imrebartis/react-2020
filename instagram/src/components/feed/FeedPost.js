@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useFeedPostStyles } from '../../styles';
 import UserCard from '../shared/UserCard';
 import {
   MoreIcon,
   CommentIcon,
   ShareIcon,
+  UnlikeIcon,
+  LikeIcon,
+  RemoveIcon,
+  SaveIcon,
 } from '../../icons';
 import { Link } from 'react-router-dom';
 import {
@@ -18,7 +22,7 @@ import HTMLEllipsis from 'react-lines-ellipsis/lib/html';
 
 function FeedPost({ post }) {
   const classes = useFeedPostStyles();
-  const [showCaption, setCaption] = React.useState(false);
+  const [showCaption, setCaption] = useState(false);
   const { id, media, likes, user, caption, comments } = post;
 
   return (
@@ -119,15 +123,75 @@ function FeedPost({ post }) {
 }
 
 function LikeButton() {
-  return <>LikeButton</>;
+  const classes = useFeedPostStyles();
+  const [liked, setLiked] = useState(false);
+  const Icon = liked ? UnlikeIcon : LikeIcon;
+  const className = liked ? classes.liked : classes.like;
+  const onClick = liked ? handleUnlike : handleLike;
+
+  function handleLike() {
+    console.log('like');
+    setLiked(true);
+  }
+
+  function handleUnlike() {
+    console.log('unlike');
+    setLiked(false);
+  }
+
+  return <Icon className={className} onClick={onClick} />;
 }
 
 function SaveButton() {
-  return <>SaveButton</>;
+  const classes = useFeedPostStyles();
+  const [saved, setSaved] = useState(false);
+  const Icon = saved ? RemoveIcon : SaveIcon;
+  const onClick = saved ? handleRemove : handleSave;
+
+  function handleSave() {
+    console.log('save');
+    setSaved(true);
+  }
+
+  function handleRemove() {
+    console.log('remove');
+    setSaved(false);
+  }
+
+  return <Icon className={classes.saveIcon} onClick={onClick} />;
 }
 
 function Comment() {
-  return <>Comment</>;
+  const classes = useFeedPostStyles();
+  const [content, setContent] = useState('');
+
+  return (
+    <div className={classes.commentContainer}>
+      <TextField
+        fullWidth
+        value={content}
+        placeholder="Add a comment..."
+        multiline
+        rowsMax={2}
+        rows={1}
+        onChange={(event) => setContent(event.target.value)}
+        className={classes.textField}
+        InputProps={{
+          classes: {
+            root: classes.root,
+            underline: classes.underline,
+          },
+        }}
+      />
+      <Button
+        color="primary"
+        className={classes.commentButton}
+        disabled={!content.trim()}
+      >
+        Post
+      </Button>
+    </div>
+  );
 }
 
 export default FeedPost;

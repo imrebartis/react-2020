@@ -19,7 +19,7 @@ import './Auth.css';
 const Auth = () => {
   const auth = useContext(AuthContext);
   const [isLoginMode, setIsLoginMode] = useState(true);
-  const {isLoading, error, sendRequest, clearError} =useHttpClient();
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
   const [formState, inputHandler, setFormData] = useForm(
     {
@@ -64,7 +64,8 @@ const Auth = () => {
 
     if (isLoginMode) {
       try {
-        await sendRequest('http://localhost:5000/api/users/login', 
+        await sendRequest(
+          'http://localhost:5000/api/users/login',
           'POST',
           JSON.stringify({
             email: formState.inputs.email.value,
@@ -75,12 +76,11 @@ const Auth = () => {
           },
         );
         auth.login();
-      } catch (err) {
-       
-      }
+      } catch (err) {}
     } else {
       try {
-        await sendRequest('http://localhost:5000/api/users/signup', 
+        await sendRequest(
+          'http://localhost:5000/api/users/signup',
           'POST',
           JSON.stringify({
             name: formState.inputs.name.value,
@@ -92,9 +92,7 @@ const Auth = () => {
           },
         );
         auth.login();
-      } catch (err) {
-        
-      }
+      } catch (err) {}
     }
   };
 

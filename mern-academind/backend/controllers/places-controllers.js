@@ -176,7 +176,7 @@ const deletePlace = async (req, res, next) => {
 
   let place;
   try {
-    place = await Place.findById(placeId).populate('creator');
+    place = await Place.findById(placeId).populate('creator', '-title -description -image -address -location');
   } catch (err) {
     const error = new HttpError(
       'Something went wrong, could not delete place.',

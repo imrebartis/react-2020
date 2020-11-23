@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 
-import Card from "../../shared/components/UIElements/Card";
-import PlaceItem from "./PlaceItem";
-import "./PlaceList.css";
-import Button from "../../shared/components/FormElements/Button";
+import Card from '../../shared/components/UIElements/Card';
+import PlaceItem from './PlaceItem';
+import Button from '../../shared/components/FormElements/Button';
+import './PlaceList.css';
 
 const PlaceList = props => {
   if (props.items.length === 0) {
@@ -27,8 +27,9 @@ const PlaceList = props => {
           title={place.title}
           description={place.description}
           address={place.address}
-          creatorId= {place.creator}
+          creatorId={place.creator}
           coordinates={place.location}
+          onDelete={props.onDeletePlace}
         />
       ))}
     </ul>
